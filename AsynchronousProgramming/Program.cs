@@ -50,3 +50,24 @@ Console.WriteLine("Todas las tareas completadas.");
     await Task.Delay(delay);
     Console.WriteLine($"{nombre} completada después de {delay}ms.");
 }
+
+
+
+//Ejemplo con manejo de excepciones en métodos asincrónicos:
+//Cuando se usa programación asincrónica, es importante manejar las excepciones 
+//correctamente. Si una tarea asincrónica falla, la excepción puede capturarse 
+//con try-catch.
+try
+{
+    await RealizarOperacionConError();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error capturado: {ex.Message}");
+}
+
+    static async Task RealizarOperacionConError()
+{
+    await Task.Delay(1000);
+    throw new InvalidOperationException("Algo salió mal en la operación.");
+}
