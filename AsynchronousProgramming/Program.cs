@@ -19,9 +19,11 @@
 //Ejemplo básico de programación asincrónica:
 //Este ejemplo simula una operación que tarda en completarse, como una llamada a una
 //API externa:
+Console.WriteLine(" - Ejemplo básico de programación asincrónica - ");
 Console.WriteLine("Iniciando tarea...");
 await RealizarOperacionAsincrona();
 Console.WriteLine("Tarea completada.");
+Console.WriteLine("----------------------------------- ");
 static async Task RealizarOperacionAsincrona()
 {
     Console.WriteLine("Comenzando operación...");
@@ -33,6 +35,7 @@ static async Task RealizarOperacionAsincrona()
 //Ejemplo con operaciones concurrentes:
 //Este ejemplo realiza múltiples operaciones asincrónicas al mismo tiempo, 
 //aprovechando Task.WhenAll para esperar a que todas terminen.
+Console.WriteLine(" - Ejemplo con operaciones concurrentes");
 Console.WriteLine("Iniciando tareas concurrentes...");
 
 Task tarea1 = OperacionAsincrona("Tarea 1", 2000);
@@ -42,9 +45,10 @@ Task tarea3 = OperacionAsincrona("Tarea 3", 1000);
 await Task.WhenAll(tarea1, tarea2, tarea3);
 
 Console.WriteLine("Todas las tareas completadas.");
-    
+Console.WriteLine("----------------------------------- ");
 
-    static async Task OperacionAsincrona(string nombre, int delay)
+
+static async Task OperacionAsincrona(string nombre, int delay)
 {
     Console.WriteLine($"{nombre} comenzando...");
     await Task.Delay(delay);
@@ -57,6 +61,7 @@ Console.WriteLine("Todas las tareas completadas.");
 //Cuando se usa programación asincrónica, es importante manejar las excepciones 
 //correctamente. Si una tarea asincrónica falla, la excepción puede capturarse 
 //con try-catch.
+Console.WriteLine(" - Ejemplo con manejo de excepciones en métodos asincrónicos");
 try
 {
     await RealizarOperacionConError();
@@ -65,9 +70,32 @@ catch (Exception ex)
 {
     Console.WriteLine($"Error capturado: {ex.Message}");
 }
+Console.WriteLine("----------------------------------- ");
 
-    static async Task RealizarOperacionConError()
+static async Task RealizarOperacionConError()
 {
     await Task.Delay(1000);
     throw new InvalidOperationException("Algo salió mal en la operación.");
+}
+
+
+
+//Ejemplo complejo: llamada a un API con HttpClient
+//Un caso común de asincronía es realizar una solicitud HTTP a un servicio 
+//externo usando HttpClient.
+Console.WriteLine(" - Ejemplo complejo: llamada a un API con HttpClient");
+string url = "https://jsonplaceholder.typicode.com/todos/1";
+string resultado = await ObtenerDatosAsync(url);
+Console.WriteLine(resultado);
+Console.WriteLine("----------------------------------- ");
+
+
+static async Task<string> ObtenerDatosAsync(string url)
+{
+    using (HttpClient client = new HttpClient())
+    {
+        HttpResponseMessage response = await client.GetAsync(url);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync();
+    }
 }
